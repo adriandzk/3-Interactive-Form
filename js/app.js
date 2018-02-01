@@ -124,16 +124,16 @@ $('input[type="checkbox"]').change(function() {
 
   // Calculate and show Total Price:
 
-  $('input:checked').each(function(){  // Select all checkbox that are checked, and loop with each method to calculate total price.
-    total+=parseInt($(this).val());  // use parseInt because value attr is a string
-  });
-  $('#price').html('Total: $' + total);
-    if (total == 0) {
-      check_activities();    // Call function to check that at least one activitie is selected. Function is defined below in the validation section
-    } else {
-      $('#error-activities').hide();
-      $("#price").css("color","white");
-    }
+$('input:checked').each(function(){  // Select all checkbox that are checked, and loop with each method to calculate total price.
+  total+=parseInt($(this).val());  // use parseInt because value attr is a string
+});
+$('#price').html('Total: $' + total);
+  if (total == 0) {
+    check_activities();    // Call function to check that at least one activitie is selected. Function is defined below in the validation section
+  } else {
+    $('#error-activities').hide();
+    $("#price").css("color","white");
+  }
 });
 
 
@@ -261,10 +261,16 @@ function check_email_empty() {
 
 // ------------- Activitied Validation -----------------
 
+// function check_activities() {
+//   $('#error-activities').html('Please select at least one activity.');
+//   $('#error-activities').show();   // Show error
+//   activitiesError = true;
+// }
+
 function check_activities() {
-  $('#error-activities').html('Please select at least one activity.');
-  $('#error-activities').show();   // Show error
-  activitiesError = true;
+    $('#error-activities').html('Please select at least one activity.');
+    $('#error-activities').show();   // Show error
+    activitiesError = true;
 }
 
 
@@ -355,6 +361,12 @@ $('#registration-form').submit(function(){
     check_email();
     check_email_empty();
 
+    const checkedAct = $('input[type="checkbox"]:checked').length;
+
+    if(!checkedAct) {
+      check_activities();
+    }
+
     const creditPay = $('option[value="credit card"]');
 
     // If credit card is selected check. If not, no need to check.
@@ -362,9 +374,8 @@ $('#registration-form').submit(function(){
       check_credit_card();
       check_zip();
       check_cvv();
-    } else if ($('#price').html() == 'Total: $0') {  // If no activities are selected, check and show message.
-      check_activities();
     }
+
 
     if (nameError === false && mailError === false && mailErrorEmpty === false && activitiesError === false && creditNumberError === false && creditZipError === false && creditCvvError === false) {
       alert('Form Submitted!');
